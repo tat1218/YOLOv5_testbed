@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-server
+  labels:
+    app: edge-server
+spec:
+  selector:
+    matchLabels:
+      app: edge-server
+  template:
+    metadata:
+      labels:
+        app: edge-server
+    spec:
+      containers:
+      - name: edge-server
+        image: yonseiwinettest/~~~ #변경 필요
+        command: ["/bin/bash", "-c","while true; do sleep 1000; done"]
+        ports:
+        - containerPort: 30000
+
+---
+
+apiVersion: apps/v1
+kind: Service
+metadata:
+  name: edge-server-ip-service
+spec:
+  clusterIP: 10.96.0.200
+  ports:
+  - name: pytorch-ddp-port
+    port: 30000
+  selector:
+    app: edge-server
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smart-camera
+  labels:
+    app: smart_camera
+spec:
+  selector:
+    matchLabels:
+      app: smart-camera
+  template:
+    metadata:
+      labels:
+        app: smart-camera
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: wnlab-nano-001
+      containers:
+      - name: smart-camera
+        image: yonseiwinettest/~~~ #변경 필요
+        env:
+        - name: MASTER_ADDR
+          value: "10.96.0.200"
+        - name: MASTER_PORT
+          value: "30000"
+        command: ["/bin/bash","-c","while true; do sleep 1000; done"]
+        ports:
+        - containerPort: 30000
+
+---
+
+apiVersion: apps/v1
+kind: Service
+metadata:
+  name: smart-camera-ip-service
+spec:
+  clusterIP: 10.96.0.201
+  ports:
+  - port: 30000
+  selector:
+    app: smart-camera
