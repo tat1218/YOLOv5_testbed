@@ -42,20 +42,20 @@ if __name__ == '__main__':
 
     os.environ['MASTER_ADDR'] = '127.0.0.1'
     os.environ['MASTER_PORT'] = '29500'
-    #dist.init_process_group('Gloo', rank=args.rank, world_size=2)
+    dist.init_process_group('Gloo', rank=args.rank, world_size=2)
 
     m = yolo.Model(cfg="./models/yolov5s.yaml")
     img = torch.zeros((1,3,256,256))
-    x = m(img, 0, args.end)
+    x = m(img, si=0, ei=args.end)
     #print(x.shape)
     for y_idx, y in enumerate(m.y):
         print("--------")
         if y != None:
             print("wait... ", y_idx, sz[y_idx])
-            #dist.send(y,dst=0)
+            dist.send(y,dst=0)
             print("send : ",y_idx, y.shape)
         else:
             print("None : ",y_idx)
     print("wait... ", args.end, sz[args.end])
-    #dist.send(x,dst=0)
+    dist.send(x,dst=0)
     print("send x : ", x.shape)
