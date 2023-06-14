@@ -42,6 +42,7 @@ if __name__ == '__main__':
 
     os.environ['MASTER_ADDR'] = '127.0.0.1'
     os.environ['MASTER_PORT'] = '29500'
+    print("Waiting...")
     dist.init_process_group('Gloo', rank=args.rank, world_size=2)
 
     m = yolo.Model(cfg="./models/yolov5s.yaml")
