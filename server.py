@@ -45,6 +45,7 @@ if __name__ == '__main__':
     print("Waiting...")
     os.environ['MASTER_ADDR'] = args.server_addr
     os.environ['MASTER_PORT'] = '29500'
+    print("Waiting...")
     dist.init_process_group('Gloo', rank=args.rank, world_size=2)
 
     m = yolo.Model(cfg="./models/yolov5s.yaml")
@@ -65,4 +66,4 @@ if __name__ == '__main__':
     print("recv x : ", x.shape)
     
     ret = m(x,y=y,si=args.start,ei=-1)
-    print(ret)
+    print("Done!!!")
