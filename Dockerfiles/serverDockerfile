@@ -1,0 +1,9 @@
+FROM pytorch/pytorch:2.0.1-cuda11.7-cudnn8-runtime
+ENV PYTHONUNBUFFERED 1
+ENV DEBIAN_FRONTEND=nointeractive
+WORKDIR /root
+COPY . /root/
+RUN apt-get update && apt-get install git nano -y
+RUN apt-get install libgl1 -y
+RUN apt-get install libglib2.0-0 -y
+RUN pip3 install -r requirements.txt
