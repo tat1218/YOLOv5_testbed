@@ -17,7 +17,7 @@ spec:
       - name: server
         image: yonseiwinettest/server-image-yolov5
         #command: ["/bin/bash", "-c","while true; do sleep 1000; done"]
-        command: ["/bin/bash","-c", "apt-get update && git clone https://github.com/tat1218/YOLOv5_testbed.git && cd YOLOv5_testbed && python3 server.py --rank 0 --start 10"]
+        command: ["/bin/bash","-c", "apt-get update && git clone https://github.com/tat1218/YOLOv5_testbed.git && cd YOLOv5_testbed && python3 server.py --rank 0 --start 10 --server_addr '10.96.0.200'"]
         ports:
         - containerPort: 30000
 
@@ -57,13 +57,8 @@ spec:
       containers:
       - name: smart-camera
         image: yonseiwinettest/smart-camera-image-yolov5
-        env:
-        - name: MASTER_ADDR
-          value: "10.96.0.200"
-        - name: MASTER_PORT
-          value: "30000"
         #command: ["/bin/bash","-c","while true; do sleep 1000; done"]
-        command: ["/bin/bash","-c", "apt-get update && git clone https://github.com/tat1218/YOLOv5_testbed.git && cd YOLOv5_testbed && python3.8 camera.py --rank 1 --end 10"]
+        command: ["/bin/bash","-c", "apt-get update && git clone https://github.com/tat1218/YOLOv5_testbed.git && cd YOLOv5_testbed && python3.8 camera.py --rank 1 --end 10 --server_addr '10.96.0.200'"]
 
         ports:
         - containerPort: 30000
