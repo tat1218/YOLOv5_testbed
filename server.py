@@ -38,9 +38,12 @@ if __name__ == '__main__':
     parser.add_argument('--rank', type=int, default=0, help='rank')
     parser.add_argument('--start', type=int, default=0)
     #parser.add_argument('--end', type=int, default=-1)
+    parser.add_argument('--server_addr', type=str, default='localhost', help='server IP address')
+
     args = parser.parse_args()
 
-    os.environ['MASTER_ADDR'] = '127.0.0.1'
+    print("Waiting...")
+    os.environ['MASTER_ADDR'] = args.server_addr
     os.environ['MASTER_PORT'] = '29500'
     dist.init_process_group('Gloo', rank=args.rank, world_size=2)
 
